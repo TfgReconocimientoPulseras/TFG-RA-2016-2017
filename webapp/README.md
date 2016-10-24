@@ -1,12 +1,9 @@
-# Aplicación web para extracción y almacenamiento de datos
-## Instalación
+# AplicaciC3n web para extracciC3n y almacenamiento de datos
+## InstalaciC3n
 1. Meter contenido de esta carpeta en la carpeta htdocs del servidor Apache o similar.
 2. Arrancar el servidor Apache o similar
-3. Conectarse desde el navegador del móvil de la siguiente forma: "http://<IPMáquina>"
+3. Conectarse desde el navegador del mC3vil de la siguiente forma: "http://<IPMaquina>"
 ## Uso
-1. Escribir nombrearchivo->start->stop y por último enviar datos al servidor.
+1. Escribir nombrearchivo->start->stop y por ultimo enviar datos al servidor.
 
 ## Todos
-1.
-2.
-3.
