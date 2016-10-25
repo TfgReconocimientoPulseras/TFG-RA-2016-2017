@@ -34,6 +34,9 @@
         h1 {
             text-align: center;
         }
+        .espacio {
+        	margin-top: 40px;
+        }
     </style>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -60,7 +63,7 @@
                         $('#play_btn').prop('disabled', false);
                         $('#stop_btn').prop('disabled', true);
                         $('#send_btn').prop('disabled', true);
-
+                        alert("fichero creado");
 
 					}
 				});
@@ -125,7 +128,8 @@
                     <li>Rotation Gamma: <span id="rotGamma"></span> degree</li>
                 </ul>
             </div>
-            <input type="text" name="nombrearchivo" id="fileinp"></input>
+            <input type="text" name="nombrearchivo" id="fileinp"><p>Nombre del fichero</p></input> 
+            <div class = "espacio"></div>
             <button id="play_btn"> Play </button>
             <button id="stop_btn"> Stop </button>
             <button id="send_btn"> Send data! </button>
