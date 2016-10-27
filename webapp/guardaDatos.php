@@ -1,13 +1,13 @@
 <?php
-	if(isset($_POST['myData']) && isset($_POST['filename'])){
+	if(isset($_POST['myData']) && isset($_POST['nombreUsu']) && isset($_POST['tiempoGrabacion']) && isset($_POST['actividad'])){
 	 	$obj = json_decode($_POST['myData']);
 
 	 	
 
-	 	if($_POST['filename'] == NULL)
-	 		$nombre = date("m,d,y G,i,s");
-	 	else
-	 		$nombre = $_POST['filename'];
+	 	$usu = $_POST['nombreUsu'];
+	 	$tiempo = $_POST['tiempoGrabacion'];
+	 	$actividad = $_POST['actividad'];
+		$nombre = $usu . "_" . $actividad . "_" . $tiempo . "_" . date("m-d-Y G;i;s");
 	 	
 
 	 	$myfile = fopen($nombre.".csv", "w") or die("Unable to open file!");

@@ -49,10 +49,16 @@
 
 			$('#send_btn').click(function(){
                 var dataString = JSON.stringify(misDatos);
-                var nombrearchivo = $('#fileinp').val();
+                var e = document.getElementById("usuario");
+       			var usu = e.options[e.selectedIndex].text;
+              	var e = document.getElementById("time");
+       			var tiempo = e.options[e.selectedIndex].text;
+       			var e = document.getElementById("activity");
+       			var activity = e.options[e.selectedIndex].text;
+       			
 				$.ajax({
 					url: "guardaDatos.php",
-					data: {myData:dataString, filename:nombrearchivo},
+					data: {myData:dataString, nombreUsu:usu, tiempoGrabacion:tiempo, actividad:activity},
 					type: "POST",
 					error: function(){
 						alert("Problemas en el envío del formulario");
@@ -128,9 +134,35 @@
                     <li>Rotation Gamma: <span id="rotGamma"></span> degree</li>
                 </ul>
             </div>
-            <input type="text" name="nombrearchivo" id="fileinp"><p>Nombre del fichero</p></input> 
+
             <div class = "espacio"></div>
-            <button id="play_btn"> Play </button>
+
+            <div class = "espacio"></div>
+            
+            <select id = "usuario">
+            	<option value="alex" selected>Alex</option>
+				<option value="veronica">Veronica</option>
+				<option value="ivan">Ivan</option>
+				<option value="daniel">Daniel</option>
+			</select>
+
+			<select id = "activity">
+				<option value="andar" selected>Andar</option>
+				<option value="correr">Correr</option>
+				<option value="ciclismo">Ciclismo</option>
+			</select>
+
+			<div class = "espacio"></div>
+
+			<label>Tiempo en segundos</label>
+			<select id = "time">
+				<option value="30" selected>30</option>
+				<option value="60">60</option>
+			</select>
+
+			<div class = "espacio"></div>
+
+			<button id="play_btn"> Play </button>
             <button id="stop_btn"> Stop </button>
             <button id="send_btn"> Send data! </button>
         </div>
