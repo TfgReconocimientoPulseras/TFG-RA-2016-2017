@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <head>
     <title>UCM - Get Data Accelerations with Phone</title>
-    <meta name="viewport" content="width=device-width,user-scalable=yes"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="js/jquerymobile/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="js/teechart.js"></script>
-    <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
-    
+    <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="js/jquerymobile/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <style>
         body {
             font-family: helvetica, arial, sans serif;
@@ -40,6 +43,8 @@
     </style>
 	<script type="text/javascript">
 		$(document).ready(function(){
+            var width = 0;
+            var perc = 0;
             $('#stop_btn').prop('disabled', true);
 
             
@@ -50,9 +55,8 @@
 			$('#send_btn').click(function(){
                 var dataString = JSON.stringify(misDatos);
                 var e = document.getElementById("usuario");
-       			var usu = e.options[e.selectedIndex].text;
+       			var usu = $("#nombre").val();
               	var e = document.getElementById("time");
-       			var tiempo = e.options[e.selectedIndex].text;
        			var e = document.getElementById("activity");
        			var activity = e.options[e.selectedIndex].text;
        			
@@ -66,6 +70,9 @@
 					success: function(data,status){
                         misDatos = [];
                         contador = 0;
+                        perc = 0;
+                        width = 0;
+                        $('#barprogress').css('width', 0+'%').attr('aria-valuenow', 0);
                         $('#play_btn').prop('disabled', false);
                         $('#stop_btn').prop('disabled', true);
                         $('#send_btn').prop('disabled', true);
@@ -79,92 +86,155 @@
                 play = 1;
                 $('#stop_btn').prop('disabled', false);
                 $('#play_btn').prop('disabled', true);
+                tiempo = $("#time option:selected").text();
+                id = setInterval(updateProgressBar, 1000);
 
             });
 
+            var updateProgressBar = function(){
+                if(perc == 100){
+                    clearInterval(id);
+                    play = 0;
+                    $('#send_btn').prop('disabled', false);
+
+                }
+                else{
+                    width++;
+                    perc = width/tiempo * 100;
+                    $('#barprogress').css('width', perc+'%').attr('aria-valuenow', perc);
+                    $('#barprogress').text(width+"s");
+                }
+            }
+
             $('#stop_btn').click(function(){
                 play = 0;
+                clearInterval(id);
+                width = 0;
+                perc = 0;
+                $('#barprogress').css('width', width+'%').attr('aria-valuenow', width);
+                misDatos = [];
+                contador = 0;
+
                 $('#stop_btn').prop('disabled', true);
-                $('#send_btn').prop('disabled', false);
+                $('#play_btn').prop('disabled', false);
+                $('#send_btn').prop('disabled', true);
             });
 
 		});
 	</script>
 </head>
     <body onload="graficar();">
-        <div id="content" >
-            <div style="border:1px solid #efefef;">
-                <h1>Datos del Aceler&oacute;metro</h1>
-                <div id="sphere"></div>
-                <ul>
-                    <li>Axis X: <span id="accel-X"></span>g</li>
-                    <li>Axis Y: <span id="accel-Y"></span>g</li>
-                    <li>Axis Z: <span id="accel-Z"></span>g</li>
-                </ul>
-                <ul>
-                    <li><label for="series">Axis:</label><select id="series"  onchange="addSeries(); Chart1.draw();">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3" selected>3</option>
-                        </select>
-                        &nbsp;  <label for="points">Puntos:</label><select id="points"  onchange="addSeries(); Chart1.draw();">
-                            <option value="100">100</option>
-                            <option value="200">200</option>
-                            <option value="500" selected>500</option>
-                            <option value="1000">1000</option>
-                            <option value="2000">2000</option>
-                            <option value="5000">5000</option>
-                            <option value="10000">10000</option>
-                            <option value="20000">20000</option>
-                            <option value="50000">50000</option>
-                        </select>
-                    </li>
-                </ul>
+        <div data-role="page"  id="pag1">
+          <div data-role="header">
+            <h1>Análisis de sensores - UCM</h1>
+            <div data-role="navbar">
+              <ul>
+                <li><a href="#pag1" data-icon="home">Home</a></li>
+                <li><a href="#pag2" data-icon="arrow-r">Enviar datos</a></li>
+              </ul>
             </div>
-            <div style="border:1px solid #efefef;">
-                <canvas id="accelerometer-canvas" width="800" height="400">
-                    Este navegador NO soporta Canvas para HTML5.
-                </canvas>
-            </div>
-            <div style="border:1px solid #efefef;">
-                <h1>Datos de Giroscopio</h1>
-                <ul>
-                    <li>Rotation Alpha: <span id="rotAlpha"></span> degree</li>
-                    <li>Rotation Beta: <span id="rotBeta"></span> degree</li>
-                    <li>Rotation Gamma: <span id="rotGamma"></span> degree</li>
-                </ul>
-            </div>
+          </div>
+
+          <div data-role="main" class="ui-content">
+                <div style="border:1px solid #efefef;">
+                    <h1>Datos del Aceler&oacute;metro</h1>
+                    <div id="sphere"></div>
+                    <ul>
+                        <li>Axis X: <span id="accel-X"></span>g</li>
+                        <li>Axis Y: <span id="accel-Y"></span>g</li>
+                        <li>Axis Z: <span id="accel-Z"></span>g</li>
+                    </ul>
+                    <ul>
+                        <li><label for="series">Axis:</label><select id="series"  onchange="addSeries(); Chart1.draw();">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3" selected>3</option>
+                            </select>
+                            &nbsp;  <label for="points">Puntos:</label><select id="points"  onchange="addSeries(); Chart1.draw();">
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="500" selected>500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="20000">20000</option>
+                                <option value="50000">50000</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <div style="border:1px solid #efefef;">
+                    <canvas id="accelerometer-canvas" height="400">
+                        Este navegador NO soporta Canvas para HTML5.
+                    </canvas>
+                </div>
+                <div style="border:1px solid #efefef;">
+                    <h1>Datos de Giroscopio</h1>
+                    <ul>
+                        <li>Rotation Alpha: <span id="rotAlpha"></span> degree</li>
+                        <li>Rotation Beta: <span id="rotBeta"></span> degree</li>
+                        <li>Rotation Gamma: <span id="rotGamma"></span> degree</li>
+                    </ul>
+                </div>
+          </div>
+
+          <div data-role="footer">
+            <h1>FDI-UCM 2016/2017</h1>
+          </div>
+        </div>
+
+        <div data-role="page"  id="pag2">
+          <div data-role="header">
+            <h1>Enviar datos</h1>
+            <div data-role="navbar">
+              <ul>
+                <li><a href="#pag1" data-icon="home">Home</a></li>
+                <li><a href="#pag1" data-icon="arrow-l">Volver</a></li>
+              </ul>
+            </div>            
+          </div>
+
+          <div data-role="main" class="ui-content">
+            <!--PONER LO DE REQUIRED -->
+            <input type="text" name="nombre" id="nombre" value placeholder="¿Cuál es tu nombre?" data-clear-btn="true">
+
+            <!--HACER QUE DESD PHP SE CARGUEN LAS ACTIVIDADES DISPONIBLES
+            AÑADIR OPCION DE PODER AÑADIR MÁS ACTIVIDADES -->
+            <select id = "activity">
+                <option value="andar" selected>Andar</option>
+                <option value="correr">Correr</option>
+                <option value="ciclismo">Ciclismo</option>
+            </select>
 
             <div class = "espacio"></div>
 
+            <label>Tiempo en segundos</label>
+            <select id = "time">
+                <option value="30" selected>30</option>
+                <option value="60">60</option>
+            </select>
+
             <div class = "espacio"></div>
-            
-            <select id = "usuario">
-            	<option value="alex" selected>Alex</option>
-				<option value="veronica">Veronica</option>
-				<option value="ivan">Ivan</option>
-				<option value="daniel">Daniel</option>
-			</select>
-
-			<select id = "activity">
-				<option value="andar" selected>Andar</option>
-				<option value="correr">Correr</option>
-				<option value="ciclismo">Ciclismo</option>
-			</select>
-
-			<div class = "espacio"></div>
-
-			<label>Tiempo en segundos</label>
-			<select id = "time">
-				<option value="30" selected>30</option>
-				<option value="60">60</option>
-			</select>
-
-			<div class = "espacio"></div>
-
-			<button id="play_btn"> Play </button>
-            <button id="stop_btn"> Stop </button>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <button id="play_btn"> Play </button>
+                </div>
+                <div class="ui-block-b">
+                    <button id="stop_btn"> Cancelar </button>
+                </div>            
+            </div>
+            <div class="progress">
+                <div id="barprogress" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                    0%
+                </div>
+            </div>
             <button id="send_btn"> Send data! </button>
+            </div>
+
+          <div data-role="footer">
+            <h1>FDI-UCM 2016/2017</h1>
+          </div>
         </div>
         <script type="text/javascript">
 
