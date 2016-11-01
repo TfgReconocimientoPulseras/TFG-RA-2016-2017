@@ -54,11 +54,8 @@
 
 			$('#send_btn').click(function(){
                 var dataString = JSON.stringify(misDatos);
-                var e = document.getElementById("usuario");
        			var usu = $("#nombre").val();
-              	var e = document.getElementById("time");
-       			var e = document.getElementById("activity");
-       			var activity = e.options[e.selectedIndex].text;
+				var activity = $("#activity option:selected").text();
        			
 				$.ajax({
 					url: "guardaDatos.php",
