@@ -12,7 +12,6 @@
 	 	
 
 	 	$myfile = fopen("datos/".$nombre.".csv", "w") or die("Unable to open file!");
-	 	fwrite($myfile, 'sep=;'.PHP_EOL);
 	 	fwrite($myfile, 'timestamp;gyro-alpha;gyro-beta;gyro-gamma;accel-x;accel-y;accel-z'.PHP_EOL);
 	    foreach($obj as $o)
 	    {
