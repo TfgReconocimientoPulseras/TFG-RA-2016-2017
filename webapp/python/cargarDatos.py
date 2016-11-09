@@ -31,7 +31,7 @@ def getStatisticsValues(inputFile, outputFile, time=1, freq=31.25, overlap=0.5):
                     'min_gyro-alpha', 'min_gyro-beta', 'min_gyro-gamma', 'min_ax', 'min_ay', 'min_az',
                     'max_gyro-alpha', 'max_gyro-beta', 'max_gyro-gamma', 'max_ax', 'max_ay', 'max_az']  # Renombrado de columnas
 
-    dfMean.T.to_csv(outputFile)
+    dfMean.T.to_csv(outputFile ';')
 
 
 if __name__ == "__main__":
